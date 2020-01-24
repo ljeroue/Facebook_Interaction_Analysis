@@ -6,7 +6,7 @@ it to a more perminate place on the internet).
 The rmarkdown file, fbClicksRMD.RMD, can also be opened in an R environment and run stand-alone to produce the HTML file here. The file, 
 fbClicks.R is my "scratch pad" for the initial analysis prior to making it rmarkdown friendly.
 
-# Project Summary
+## Project Summary
 FreeCodeCamp provided data from posts on their facebook page. The dataset includes date and time the post was made, the type of post 
 (whether it was a link, video, photo, or status), number of users reached, and user interactions (clicks or reactions). Matthew Barlowe 
 provided the initial dive into cleaning and exploratory analysis. Here, I go a step further and examine the user reactions by facebook 
