@@ -1,0 +1,357 @@
+---
+title: "Analyze FreeCodeCamp Facebook Post Interactions"
+author: "Lacey Jeroue"
+date: "11/6/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+FreeCodeCamp provided data from posts on their facebook page. The dataset includes date and time the post was made, the type of post (whether it was a link, video, photo, or status), number of users reached, and user interactions (clicks or reactions). Matthew Barlowe provided the initial dive into cleaning and exploratory analysis. Here, I go a step further and examine the user reactions by facebook post topics.
+
+Check out the dataset and documentation here: <https://github.com/freeCodeCamp/open-data/tree/master/facebook-fCC-data>
+
+
+## Prepare the workspace
+
+```{r prepare workspace, include = T, message=FALSE, warning=FALSE}
+
+# Load Packages
+library(tidyverse)
+library(RCurl)
+library(lubridate)
+library(pander)
+library(tm)
+library(wordcloud)
+
+panderOptions('table.split.table', Inf)  # Do not split table
+
+# Load the Facebook dataset from FreeCodeCamp on github
+gitURL <- getURL("https://raw.githubusercontent.com/freeCodeCamp/open-data/master/facebook-fCC-data/data/freeCodeCamp-facebook-page-activity.csv")
+fb <- read_csv(gitURL)
+
+
+# Address (convert) variable class
+fb <- fb %>% 
+  mutate_each(mdy, "date") %>%
+  mutate_each(as.numeric, "reactions")
+
+
+# Take a look at the dataset
+str(fb)
+
+```
+## Add Variables
+```{r add variables, include = T, message=FALSE, warning=FALSE}
+# Add proportion of clicks per users reached & proporiton of reactions per user clicks
+fb <- mutate(fb,
+             propClicks = clicks / reach,
+             propReactions = reactions / reach)
+
+
+# Get sample size by post type
+type_n <- fb %>% 
+  group_by(type) %>% 
+  summarize(
+    Qty_PostType = n()
+  )
+
+
+# Add label including sample size for plotting later
+fb <- left_join(fb, type_n)
+fb <- fb %>% 
+  mutate(Type = paste0(type, "\nn = ", Qty_PostType))
+
+
+# Add date & time variables
+fb <- fb %>% 
+  mutate(week = week(date),
+         year = year(date),
+         month = month(date, label = T, abbr = T),
+         datetime = make_datetime(year, month, 
+                                  day = day(date), 
+                                  hour = as.numeric(substr(time, 1, 2)), 
+                                  min = as.numeric(substr(time, 4, 5))))
+
+```
+
+## Remove data
+There is one post with over 100,000 reactions. It is a major outlier so I will remove it since I can't check with the data collection team to understand why this value is so extreem. 
+In addition, because there are few observations for public (n = 1) and status (n = 3) post types I will ommit those from analysis as well. 
+
+```{r outlier, echo=FALSE, message = F}
+fb %>% 
+  ggplot(aes(date, reach, col=type)) +
+  geom_point() + 
+  annotate(geom="text", x=3, y=50000, label="Outlier",
+              color="red") +
+  labs(y="Users Reached", x = "")
+```
+```{r analysis dataset, include = T, message=FALSE, warning=FALSE}
+fbdat <- fb %>% 
+  filter(reach < 100000 &                            
+           !type %in% c("Public", "Status")  
+  )
+```
+
+## User Interaction by Post Type
+Users more often clicked a link when the post additionally had a photo or a video. Over the course of the year, 12% of users on average clicked a post containing a photo or video compared to 7% for posts containing only a link.  Users were also more likely to react to a post when the post contained a photo or video.
+
+```{r percent clicks by type table, echo = FALSE, message = FALSE}
+t_perClick <- fbdat %>% 
+  group_by(Type = type) %>% 
+  summarise(`Average Clicks` = paste0(round(sum(clicks)/sum(reach)*100, 1), "%"),
+            `Average Reactions` = paste0(round(sum(reactions)/sum(reach)*100, 1), "%"),)
+
+```
+
+```{r percent clicks by type, echo = FALSE, message = FALSE}
+pander(t_perClick)
+```
+
+```{r Click rate, echo=FALSE, message = F}
+fbdat %>% 
+  ggplot(aes(fill = type)) +
+  geom_violin(aes(Type, propClicks)) + 
+  labs(x = "", y = "Click Rate") + 
+  theme(legend.position = "none", text = element_text(size=rel(4)))
+
+fbdat %>% 
+  ggplot(aes(fill = type)) +
+  geom_violin(aes(Type, propReactions)) + 
+  labs(x = "", y = "Reaction Rate") + 
+  theme(legend.position = "none", text = element_text(size=rel(4)))
+
+```
+
+## Posts over time
+Let's look at this by week to reduce the noice in daily posts and get a better picture of the patterns. 
+
+
+```{r get week dataset, include = T, message=FALSE, warning=FALSE}
+
+# Aggregate by week for a summarized dataset
+fb_week <- fbdat %>% 
+  group_by(week, year) %>% 
+  summarize(n_posts = n(),
+            sum_reach = sum(reach),
+            sum_click = sum(clicks),
+            mean_clicks = mean(clicks),
+            mean_propClicks = mean(propClicks),
+            mean_propReaction = mean(propReactions),
+            mean_reachedPerPost = sum_reach / n_posts) %>% 
+  arrange(year, week)
+
+
+# Standardize the week number to begin with one
+# (this works becuase posts were made each week and none were missing)
+fb_week$weekNo <- seq(1, nrow(fb_week))
+
+
+# Get more meaninful x labels for graphing (month rather than week number)
+labels <- unique(fbdat[,c("week","month")])
+labels <- left_join(labels, fb_week[,c("week", "weekNo")])
+labels <- labels[order(labels$weekNo), ]
+label <- NULL
+for(i in unique(labels$month)){         # some weeks span two months
+  labelx <- labels[labels$month == i, ] # choose earliest week for each month
+  labelx <- labelx[labelx$weekNo == min(labelx$weekNo), ]
+  label <- rbind(label, labelx)
+}
+```
+
+### User click rates increased over the year! 
+
+
+```{r Total thousand user clicks, echo=TRUE, message = F}
+fb_week %>% 
+  mutate(clicked1000 = sum_click/1000) %>% 
+  ggplot(aes(weekNo, clicked1000)) + 
+  geom_line() +  
+  geom_smooth(method = "lm") +  
+  labs(y = "Total thousand user clicks per week", x = "") +
+  scale_x_continuous(breaks = label$weekNo,
+                     labels = label$month) +
+  theme(axis.line = element_line(),
+        text = element_text(size=rel(4)))
+
+```
+
+
+### Well, not so fast!!
+
+It is important to take into account the number of posts from which a user was inspired to click. When we look at the number of posts over time, it is clear that Free Code Camp has increased it's social media presense on Facebook over the year. By just looking at the total clicks it is impossible to see if clicks are increasing because posts are increasing. 
+
+It is better to look at the proportion of clicks per post to understand whether user interactions are increasing due to post content rather than the increased Facebook posts. 
+
+#### First, check out how facebook posts have increased
+\vspace{24pt}
+```{r Total posts, echo=TRUE, message = F}
+ggplot(fb_week, aes(weekNo, n_posts)) + 
+  geom_line() +  
+  geom_smooth(method = "lm") +  
+  labs(y = "Posts per week", x = "") +
+  scale_x_continuous(breaks = label$weekNo,
+                   labels = label$month) +
+  theme(axis.line = element_line(),
+        text = element_text(size=rel(4)))
+```
+
+#### Now, see how the relative number of users reached hasn't changed over the year
+\vspace{24pt}
+```{r Average users reached per post per week, echo=TRUE, message = F}
+fb_week %>% 
+  ggplot(aes(weekNo, mean_reachedPerPost)) + 
+  geom_line() +  
+  geom_smooth(method = "lm") +  # second in a week
+  labs(y = "Average users reached per post per week", x = "") +
+  scale_x_continuous(breaks = label$weekNo,
+                     labels = label$month) +
+  theme(axis.line = element_line(),
+        text = element_text(size=rel(4)))
+```
+
+#### Last, check out how the click rate is actually falling!
+
+```{r Average number of clicks per post per week, echo=TRUE, message = F}
+fb_week %>% 
+  ggplot(aes(weekNo, mean_propClicks)) + 
+  geom_line() +  
+  geom_smooth(method = "lm") +  
+  labs(y = "Average clicks rate per week", x = "") +
+  scale_x_continuous(breaks = label$weekNo,
+                     labels = label$month) +
+  theme(axis.line = element_line(),
+        text = element_text(size=rel(4)))
+
+```
+
+### Take a look at post type
+Posts with just a link increased throughout the year while posts with photos stayed about the same and posts with videos stopped early in the year. Only that but the click rate for photo posts deacreased as did single link posts. Recal that post with links garner a lower click rate than those paired with a photo or video. 
+
+```{r Posts per week by type data prep, include = T, message = F}
+# Aggregate by week for a summarized dataset
+fb_week_type <- fbdat %>% 
+  group_by(type, week, year) %>% 
+  summarize(n_posts = n(),
+            sum_reach = sum(reach),
+            mean_propClicks = mean(propClicks),
+            mean_propReaction = mean(propReactions),
+            mean_reachedPerPost = sum_reach / n_posts) %>% 
+  arrange(year, week)
+
+
+# Standardize the week number to begin with one
+fb_week_type <- left_join(fb_week_type, fb_week[,c("week", "weekNo")])
+```
+
+
+```{r Posts per week by type, echo=TRUE, message = F}
+ggplot(fb_week_type) + 
+  geom_line(aes(weekNo, n_posts, col = type)) +  
+  geom_smooth(method = "lm", aes(weekNo, n_posts, col = type)) +
+  labs(y = "Posts per week", x = "") +
+  scale_x_continuous(breaks = label$weekNo,
+                     labels = label$month) +
+  theme(axis.line = element_line())
+
+```
+
+
+```{r Click rate by type, echo=TRUE, message = F}
+ggplot(fb_week_type) + 
+  geom_line(aes(weekNo, mean_propClicks, col = type)) +  
+  geom_smooth(method = "lm", aes(weekNo, mean_propClicks, col = type)) +
+  labs(y = "Average click rate by week", x = "") +
+  scale_x_continuous(breaks = label$weekNo,
+                     labels = label$month) +
+  theme(axis.line = element_line())
+
+```
+
+
+## Post Topics & "buzzwords"
+
+### Top 5 Titles
+Let's take a look at the top 5 most clicked posts for links and photos
+
+```{r find clickable_Titles, include = T, message=FALSE, warning=FALSE}
+clickable_Titles <- rbind(fbdat %>% 
+                     filter(type == "Link") %>% 
+                     select(type, title, propClicks) %>% 
+                     arrange(desc(propClicks)) %>% 
+                     top_n(5),
+                   fbdat %>% 
+                     filter(type == "Photo") %>% 
+                     select(type, title, propClicks) %>% 
+                     arrange(desc(propClicks)) %>% 
+                     top_n(5)
+)
+ 
+names(clickable_Titles) <- c("Type", "Post Title", "Click Rate") 
+```
+
+```{r Clickable titles table, echo = FALSE, message = FALSE}
+pander(clickable_Titles, justify = c('center', 'left', 'center'))
+```
+
+### Buzzwords
+Now let's pull out common words from the post titles and look at post click rates for posts containing those common words.
+
+```{r buzzwords, include = T, message=FALSE, warning=FALSE}
+
+# Create a 'corpus' object via the  text mining, tm package
+post_titles <- str_to_lower(fbdat$title) #pulls the titles into a chr vector
+post_corpus <- post_titles %>%
+  VectorSource() %>% 
+  Corpus() %>% 
+  tm_map(removePunctuation) %>% 
+  tm_map(removeWords, stopwords('english')) %>% 
+  tm_map(removeNumbers) %>% 
+  tm_map(stemDocument) %>% 
+  tm_map(stripWhitespace) 
+  
+
+# Make a word cloud
+wordcloud::wordcloud(post_corpus, max.words = 80, random.order = FALSE)
+```
+
+
+```{r isolate word, include = T, message=FALSE, warning=FALSE}
+
+# Isolate common words into a Text documet matrix
+commonWords_tdm <- post_corpus %>% 
+  TermDocumentMatrix() %>% 
+  removeSparseTerms(0.99)
+  
+# Convert TDM to tibble
+commonWords <- commonWords_tdm %>% as.matrix()
+commonWords <- tibble(Terms = rownames(commonWords),
+                      freq = rowSums(commonWords)) %>% 
+  arrange(desc(freq))
+
+
+# Get the average proportion of clicks for articals containing each buzzword
+wordClicks <- NULL
+for(word in findFreqTerms(commonWords_tdm, 12)){ # only terms that occur 12+ times
+  modeldf <- fbdat %>% 
+    filter(str_detect(str_to_lower(title), word))
+  wordclicksx <- tibble(Buzzword = word,
+                        avg.prop.clicks = mean(modeldf$propClicks),
+                        sd = sd(modeldf$propClicks),
+                        n = nrow(modeldf))
+  wordClicks <- rbind(wordClicks, wordclicksx)
+}
+
+
+# Visualize clicks by buzzword
+ggplot(wordClicks, aes(x = reorder(Buzzword, avg.prop.clicks), y =avg.prop.clicks)) +
+  geom_point() +
+  coord_flip() + 
+  labs(y = "Average click rate for articals containing term", x = "Term")
+
+```
