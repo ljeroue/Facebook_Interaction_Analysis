@@ -1,8 +1,8 @@
 ---
-title: "Analyze FreeCodeCamp Facebook Post Interactions"
+title: "Facebook Interaction Trends - FreeCodeCamp"
 author: "Lacey Jeroue"
 date: "11/6/2019"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,9 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Introduction
-FreeCodeCamp provided data from posts on their facebook page. The dataset includes date and time the post was made, the type of post (whether it was a link, video, photo, or status), number of users reached, and user interactions (clicks or reactions). Matthew Barlowe provided the initial dive into cleaning and exploratory analysis. Here, I go a step further and examine the user reactions by facebook post topics.
+FreeCodeCamp provided data from posts on their facebook page. The dataset includes date and time the post was made, the type of post (whether it was a link, video, photo, or status), number of users reached, and user interactions (clicks or reactions). Matthew Barlowe provided the initial dive into cleaning and exploratory analysis. Here, I go a step further and examine the user reactions by facebook post topics. Specifically, I answer the questions:
+
+How, if at all, are interactions towards Free Code Camp's Facebook posts changing over the year?
+Is the content of Free Code Camp's posts driving any of those changes?
 
 Check out the dataset and documentation here: <https://github.com/freeCodeCamp/open-data/tree/master/facebook-fCC-data>
+
 
 
 ## Prepare the workspace
@@ -28,25 +32,23 @@ library(pander)
 library(tm)
 library(wordcloud)
 
-panderOptions('table.split.table', Inf)  # Do not split table
+panderOptions('table.split.table', Inf)  # Do not split markdown tables
 
 # Load the Facebook dataset from FreeCodeCamp on github
 gitURL <- getURL("https://raw.githubusercontent.com/freeCodeCamp/open-data/master/facebook-fCC-data/data/freeCodeCamp-facebook-page-activity.csv")
 fb <- read_csv(gitURL)
 
+# Take a look at the dataset
+str(fb)
 
+```
+## Add variables
+```{r add variables, include = T, message=FALSE, warning=FALSE}
 # Address (convert) variable class
 fb <- fb %>% 
   mutate_each(mdy, "date") %>%
   mutate_each(as.numeric, "reactions")
 
-
-# Take a look at the dataset
-str(fb)
-
-```
-## Add Variables
-```{r add variables, include = T, message=FALSE, warning=FALSE}
 # Add proportion of clicks per users reached & proporiton of reactions per user clicks
 fb <- mutate(fb,
              propClicks = clicks / reach,
@@ -80,16 +82,17 @@ fb <- fb %>%
 ```
 
 ## Remove data
-There is one post with over 100,000 reactions. It is a major outlier so I will remove it since I can't check with the data collection team to understand why this value is so extreem. 
-In addition, because there are few observations for public (n = 1) and status (n = 3) post types I will ommit those from analysis as well. 
+Remove the outlier post with over 100,000 reactions. Reduce to three types of posts because there are too few observations for public (n = 1) and status (n = 3) post types.
 
 ```{r outlier, echo=FALSE, message = F}
-fb %>% 
-  ggplot(aes(date, reach, col=type)) +
-  geom_point() + 
-  annotate(geom="text", x=3, y=50000, label="Outlier",
-              color="red") +
-  labs(y="Users Reached", x = "")
+outlier <- fb %>% filter(reach > 400000)
+
+ggplot(fb, aes(date, reach, col=type)) +
+  geom_point() +
+  labs(y="Users Reached", x = "") +
+  geom_text(data = outlier, aes(x = date + 20, y = reach, label = "outlier"))
+
+  
 ```
 ```{r analysis dataset, include = T, message=FALSE, warning=FALSE}
 fbdat <- fb %>% 
@@ -98,38 +101,59 @@ fbdat <- fb %>%
   )
 ```
 
-## User Interaction by Post Type
+## Examine post frequency
+The number of posts per day changed little but posting per day occured more frequently over the course of the study period.
+```{r posts, include = T, message=FALSE, warning=FALSE}
+
+# Number of posts per day over the study year
+fbdat %>% 
+  group_by(date) %>%
+  summarize(n = n()) %>%
+  ggplot(aes(date, n)) +
+    geom_bar(stat = "identity") +
+  geom_smooth()
+  
+# Number of posts per week over the study year
+fbdat %>% 
+  count(week = floor_date(date, "week")) %>% 
+  ggplot(aes(week, n)) +
+    geom_bar(stat = "identity") +
+    labs(y = "Posts per week") +
+    geom_smooth()
+
+
+```
+
+
+## User Interactions
 Users more often clicked a link when the post additionally had a photo or a video. Over the course of the year, 12% of users on average clicked a post containing a photo or video compared to 7% for posts containing only a link.  Users were also more likely to react to a post when the post contained a photo or video.
 
 ```{r percent clicks by type table, echo = FALSE, message = FALSE}
 t_perClick <- fbdat %>% 
   group_by(Type = type) %>% 
   summarise(`Average Clicks` = paste0(round(sum(clicks)/sum(reach)*100, 1), "%"),
-            `Average Reactions` = paste0(round(sum(reactions)/sum(reach)*100, 1), "%"),)
-
-```
-
-```{r percent clicks by type, echo = FALSE, message = FALSE}
+            `Average Reactions` = paste0(round(sum(reactions)/sum(reach)*100, 1), "%"))
 pander(t_perClick)
+
 ```
+
 
 ```{r Click rate, echo=FALSE, message = F}
-fbdat %>% 
-  ggplot(aes(fill = type)) +
-  geom_violin(aes(Type, propClicks)) + 
-  labs(x = "", y = "Click Rate") + 
-  theme(legend.position = "none", text = element_text(size=rel(4)))
+facetNames <- as_labeller(c('propClicks' = "Clicks per users reached",
+                            'propReactions' = "Reactions per users reached"))
 
 fbdat %>% 
+  gather(key = metric, value = proportion, propClicks:propReactions) %>% 
   ggplot(aes(fill = type)) +
-  geom_violin(aes(Type, propReactions)) + 
-  labs(x = "", y = "Reaction Rate") + 
-  theme(legend.position = "none", text = element_text(size=rel(4)))
+  geom_violin(aes(Type, proportion)) + 
+  labs(x = "", y = "Proportion") + 
+  facet_wrap(~ metric, labeller = facetNames)
+
 
 ```
 
 ## Posts over time
-Let's look at this by week to reduce the noice in daily posts and get a better picture of the patterns. 
+Now we are going to look at total posts by week to reduce the noice in daily posts and get a better picture of the annual pattern. From the graphic below, it is clear that clicks increased over the study year.
 
 
 ```{r get week dataset, include = T, message=FALSE, warning=FALSE}
@@ -152,7 +176,7 @@ fb_week <- fbdat %>%
 fb_week$weekNo <- seq(1, nrow(fb_week))
 
 
-# Get more meaninful x labels for graphing (month rather than week number)
+# Get more meaningful x labels for graphing (month rather than week number)
 labels <- unique(fbdat[,c("week","month")])
 labels <- left_join(labels, fb_week[,c("week", "weekNo")])
 labels <- labels[order(labels$weekNo), ]
@@ -164,10 +188,10 @@ for(i in unique(labels$month)){         # some weeks span two months
 }
 ```
 
-### User click rates increased over the year! 
 
 
 ```{r Total thousand user clicks, echo=TRUE, message = F}
+# The plot
 fb_week %>% 
   mutate(clicked1000 = sum_click/1000) %>% 
   ggplot(aes(weekNo, clicked1000)) + 
@@ -179,14 +203,34 @@ fb_week %>%
   theme(axis.line = element_line(),
         text = element_text(size=rel(4)))
 
+
+fbdat %>% 
+ggplot(aes(date, clicks)) + 
+  geom_line() +  
+  geom_smooth(method = "lm") +  
+  labs(y = "Daily clicks", x = "") +
+  scale_x_date(date_breaks = "1 month",
+               date_labels = "%b") +
+  theme(axis.line = element_line(),
+        text = element_text(size=rel(4)))
+
+fbdat %>% 
+ggplot(aes(date, reach)) + 
+  geom_line() +  
+  geom_smooth(method = "lm") +  
+  labs(y = "Daily clicks", x = "") +
+  scale_x_date(date_breaks = "1 month",
+               date_labels = "%b") +
+  theme(axis.line = element_line(),
+        text = element_text(size=rel(4)))
 ```
 
-
+### User click rates increased over the year! 
 ### Well, not so fast!!
 
 It is important to take into account the number of posts from which a user was inspired to click. When we look at the number of posts over time, it is clear that Free Code Camp has increased it's social media presense on Facebook over the year. By just looking at the total clicks it is impossible to see if clicks are increasing because posts are increasing. 
 
-It is better to look at the proportion of clicks per post to understand whether user interactions are increasing due to post content rather than the increased Facebook posts. 
+We need to look at the proportion of clicks per post to understand whether user interactions are increasing due to post content rather than the increased Facebook posts. 
 
 #### First, check out how facebook posts have increased
 \vspace{24pt}

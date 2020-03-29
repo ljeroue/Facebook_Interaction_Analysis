@@ -1,0 +1,734 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Facebook Interaction Trends - FreeCodeCamp},
+  pdfauthor={Lacey Jeroue},
+  pdfborder={0 0 0},
+  breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-2}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Facebook Interaction Trends - FreeCodeCamp}
+\author{Lacey Jeroue}
+\date{11/6/2019}
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+FreeCodeCamp provided data from posts on their facebook page. The
+dataset includes date and time the post was made, the type of post
+(whether it was a link, video, photo, or status), number of users
+reached, and user interactions (clicks or reactions). Matthew Barlowe
+provided the initial dive into cleaning and exploratory analysis. Here,
+I go a step further and examine the user reactions by facebook post
+topics. Specifically, I answer the questions:
+
+How, if at all, are interactions towards Free Code Camp's Facebook posts
+changing over the year? Is the content of Free Code Camp's posts driving
+any of those changes?
+
+Check out the dataset and documentation here:
+\url{https://github.com/freeCodeCamp/open-data/tree/master/facebook-fCC-data}
+
+\hypertarget{prepare-the-workspace}{%
+\subsection{Prepare the workspace}\label{prepare-the-workspace}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Load Packages}
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(RCurl)}
+\KeywordTok{library}\NormalTok{(lubridate)}
+\KeywordTok{library}\NormalTok{(pander)}
+\KeywordTok{library}\NormalTok{(tm)}
+\KeywordTok{library}\NormalTok{(wordcloud)}
+
+\KeywordTok{panderOptions}\NormalTok{(}\StringTok{'table.split.table'}\NormalTok{, }\OtherTok{Inf}\NormalTok{)  }\CommentTok{# Do not split markdown tables}
+
+\CommentTok{# Load the Facebook dataset from FreeCodeCamp on github}
+\NormalTok{gitURL <-}\StringTok{ }\KeywordTok{getURL}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/freeCodeCamp/open-data/master/facebook-fCC-data/data/freeCodeCamp-facebook-page-activity.csv"}\NormalTok{)}
+\NormalTok{fb <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(gitURL)}
+
+\CommentTok{# Take a look at the dataset}
+\KeywordTok{str}\NormalTok{(fb)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Classes 'spec_tbl_df', 'tbl_df', 'tbl' and 'data.frame': 420 obs. of  7 variables:
+##  $ date     : chr  "08/18/2017" "08/18/2017" "08/17/2017" "08/17/2017" ...
+##  $ time     : 'hms' num  15:45:00 11:27:00 19:18:00 16:55:00 ...
+##   ..- attr(*, "units")= chr "secs"
+##  $ title    : chr  "The origins of t-distributions and how they can help you make accurate estimates from small sample sizes." "How one camper got his developer dream job" "Trying to code when chat's open" "An interaction designer explains how a \"homeless iPhone\" might work." ...
+##  $ type     : chr  "Link" "Link" "Video" "Link" ...
+##  $ reach    : num  1768 6941 17399 3751 18248 ...
+##  $ clicks   : num  44 536 2236 167 1946 ...
+##  $ reactions: chr  "21" "99" "750" "10" ...
+##  - attr(*, "spec")=
+##   .. cols(
+##   ..   date = col_character(),
+##   ..   time = col_time(format = ""),
+##   ..   title = col_character(),
+##   ..   type = col_character(),
+##   ..   reach = col_double(),
+##   ..   clicks = col_double(),
+##   ..   reactions = col_character()
+##   .. )
+\end{verbatim}
+
+\hypertarget{add-variables}{%
+\subsection{Add variables}\label{add-variables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Address (convert) variable class}
+\NormalTok{fb <-}\StringTok{ }\NormalTok{fb }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate_each}\NormalTok{(mdy, }\StringTok{"date"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate_each}\NormalTok{(as.numeric, }\StringTok{"reactions"}\NormalTok{)}
+
+\CommentTok{# Add proportion of clicks per users reached & proporiton of reactions per user clicks}
+\NormalTok{fb <-}\StringTok{ }\KeywordTok{mutate}\NormalTok{(fb,}
+             \DataTypeTok{propClicks =}\NormalTok{ clicks }\OperatorTok{/}\StringTok{ }\NormalTok{reach,}
+             \DataTypeTok{propReactions =}\NormalTok{ reactions }\OperatorTok{/}\StringTok{ }\NormalTok{reach)}
+
+
+\CommentTok{# Get sample size by post type}
+\NormalTok{type_n <-}\StringTok{ }\NormalTok{fb }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}
+    \DataTypeTok{Qty_PostType =} \KeywordTok{n}\NormalTok{()}
+\NormalTok{  )}
+
+
+\CommentTok{# Add label including sample size for plotting later}
+\NormalTok{fb <-}\StringTok{ }\KeywordTok{left_join}\NormalTok{(fb, type_n)}
+\NormalTok{fb <-}\StringTok{ }\NormalTok{fb }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Type =} \KeywordTok{paste0}\NormalTok{(type, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{n = "}\NormalTok{, Qty_PostType))}
+
+
+\CommentTok{# Add date & time variables}
+\NormalTok{fb <-}\StringTok{ }\NormalTok{fb }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{week =} \KeywordTok{week}\NormalTok{(date),}
+         \DataTypeTok{year =} \KeywordTok{year}\NormalTok{(date),}
+         \DataTypeTok{month =} \KeywordTok{month}\NormalTok{(date, }\DataTypeTok{label =}\NormalTok{ T, }\DataTypeTok{abbr =}\NormalTok{ T),}
+         \DataTypeTok{datetime =} \KeywordTok{make_datetime}\NormalTok{(year, month, }
+                                  \DataTypeTok{day =} \KeywordTok{day}\NormalTok{(date), }
+                                  \DataTypeTok{hour =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{substr}\NormalTok{(time, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)), }
+                                  \DataTypeTok{min =} \KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{substr}\NormalTok{(time, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{))))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{remove-data}{%
+\subsection{Remove data}\label{remove-data}}
+
+Remove the outlier post with over 100,000 reactions. Reduce to three
+types of posts because there are too few observations for public (n = 1)
+and status (n = 3) post types.
+
+\includegraphics{fbClicksRMD_files/figure-latex/outlier-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fbdat <-}\StringTok{ }\NormalTok{fb }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(reach }\OperatorTok{<}\StringTok{ }\DecValTok{100000} \OperatorTok{&}\StringTok{                            }
+\StringTok{           }\OperatorTok{!}\NormalTok{type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Public"}\NormalTok{, }\StringTok{"Status"}\NormalTok{)  }
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{examine-post-frequency}{%
+\subsection{Examine post frequency}\label{examine-post-frequency}}
+
+The number of posts per day changed little but posting per day occured
+more frequently over the course of the study period.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Number of posts per day over the study year}
+\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(date) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{n =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(date, n)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/posts-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Number of posts per week over the study year}
+\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{count}\NormalTok{(}\DataTypeTok{week =} \KeywordTok{floor_date}\NormalTok{(date, }\StringTok{"week"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(week, n)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Posts per week"}\NormalTok{) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_smooth}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/posts-2.pdf}
+
+\hypertarget{user-interactions}{%
+\subsection{User Interactions}\label{user-interactions}}
+
+Users more often clicked a link when the post additionally had a photo
+or a video. Over the course of the year, 12\% of users on average
+clicked a post containing a photo or video compared to 7\% for posts
+containing only a link. Users were also more likely to react to a post
+when the post contained a photo or video.
+
+\begin{longtable}[]{@{}ccc@{}}
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\centering
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.22\columnwidth}\centering
+Average Clicks\strut
+\end{minipage} & \begin{minipage}[b]{0.25\columnwidth}\centering
+Average Reactions\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.10\columnwidth}\centering
+Link\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\centering
+7.4\%\strut
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\centering
+1.9\%\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+Photo\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\centering
+11.8\%\strut
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\centering
+3.2\%\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+Video\strut
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\centering
+11.8\%\strut
+\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\centering
+2.4\%\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Click rate-1.pdf}
+
+\hypertarget{posts-over-time}{%
+\subsection{Posts over time}\label{posts-over-time}}
+
+Now we are going to look at total posts by week to reduce the noice in
+daily posts and get a better picture of the annual pattern. From the
+graphic below, it is clear that clicks increased over the study year.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Aggregate by week for a summarized dataset}
+\NormalTok{fb_week <-}\StringTok{ }\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(week, year) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{n_posts =} \KeywordTok{n}\NormalTok{(),}
+            \DataTypeTok{sum_reach =} \KeywordTok{sum}\NormalTok{(reach),}
+            \DataTypeTok{sum_click =} \KeywordTok{sum}\NormalTok{(clicks),}
+            \DataTypeTok{mean_clicks =} \KeywordTok{mean}\NormalTok{(clicks),}
+            \DataTypeTok{mean_propClicks =} \KeywordTok{mean}\NormalTok{(propClicks),}
+            \DataTypeTok{mean_propReaction =} \KeywordTok{mean}\NormalTok{(propReactions),}
+            \DataTypeTok{mean_reachedPerPost =}\NormalTok{ sum_reach }\OperatorTok{/}\StringTok{ }\NormalTok{n_posts) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(year, week)}
+
+
+\CommentTok{# Standardize the week number to begin with one}
+\CommentTok{# (this works becuase posts were made each week and none were missing)}
+\NormalTok{fb_week}\OperatorTok{$}\NormalTok{weekNo <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\KeywordTok{nrow}\NormalTok{(fb_week))}
+
+
+\CommentTok{# Get more meaningful x labels for graphing (month rather than week number)}
+\NormalTok{labels <-}\StringTok{ }\KeywordTok{unique}\NormalTok{(fbdat[,}\KeywordTok{c}\NormalTok{(}\StringTok{"week"}\NormalTok{,}\StringTok{"month"}\NormalTok{)])}
+\NormalTok{labels <-}\StringTok{ }\KeywordTok{left_join}\NormalTok{(labels, fb_week[,}\KeywordTok{c}\NormalTok{(}\StringTok{"week"}\NormalTok{, }\StringTok{"weekNo"}\NormalTok{)])}
+\NormalTok{labels <-}\StringTok{ }\NormalTok{labels[}\KeywordTok{order}\NormalTok{(labels}\OperatorTok{$}\NormalTok{weekNo), ]}
+\NormalTok{label <-}\StringTok{ }\OtherTok{NULL}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{unique}\NormalTok{(labels}\OperatorTok{$}\NormalTok{month))\{         }\CommentTok{# some weeks span two months}
+\NormalTok{  labelx <-}\StringTok{ }\NormalTok{labels[labels}\OperatorTok{$}\NormalTok{month }\OperatorTok{==}\StringTok{ }\NormalTok{i, ] }\CommentTok{# choose earliest week for each month}
+\NormalTok{  labelx <-}\StringTok{ }\NormalTok{labelx[labelx}\OperatorTok{$}\NormalTok{weekNo }\OperatorTok{==}\StringTok{ }\KeywordTok{min}\NormalTok{(labelx}\OperatorTok{$}\NormalTok{weekNo), ]}
+\NormalTok{  label <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(label, labelx)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The plot}
+\NormalTok{fb_week }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{clicked1000 =}\NormalTok{ sum_click}\OperatorTok{/}\DecValTok{1000}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(weekNo, clicked1000)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Total thousand user clicks per week"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =}\NormalTok{ label}\OperatorTok{$}\NormalTok{weekNo,}
+                     \DataTypeTok{labels =}\NormalTok{ label}\OperatorTok{$}\NormalTok{month) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\KeywordTok{rel}\NormalTok{(}\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Total thousand user clicks-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(date, clicks)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Daily clicks"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_date}\NormalTok{(}\DataTypeTok{date_breaks =} \StringTok{"1 month"}\NormalTok{,}
+               \DataTypeTok{date_labels =} \StringTok{"%b"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\KeywordTok{rel}\NormalTok{(}\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Total thousand user clicks-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(date, reach)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Daily clicks"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_date}\NormalTok{(}\DataTypeTok{date_breaks =} \StringTok{"1 month"}\NormalTok{,}
+               \DataTypeTok{date_labels =} \StringTok{"%b"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\KeywordTok{rel}\NormalTok{(}\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Total thousand user clicks-3.pdf}
+
+\hypertarget{user-click-rates-increased-over-the-year}{%
+\subsubsection{User click rates increased over the
+year!}\label{user-click-rates-increased-over-the-year}}
+
+\hypertarget{well-not-so-fast}{%
+\subsubsection{Well, not so fast!!}\label{well-not-so-fast}}
+
+It is important to take into account the number of posts from which a
+user was inspired to click. When we look at the number of posts over
+time, it is clear that Free Code Camp has increased it's social media
+presense on Facebook over the year. By just looking at the total clicks
+it is impossible to see if clicks are increasing because posts are
+increasing.
+
+We need to look at the proportion of clicks per post to understand
+whether user interactions are increasing due to post content rather than
+the increased Facebook posts.
+
+\hypertarget{first-check-out-how-facebook-posts-have-increased}{%
+\paragraph{First, check out how facebook posts have
+increased}\label{first-check-out-how-facebook-posts-have-increased}}
+
+\vspace{24pt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(fb_week, }\KeywordTok{aes}\NormalTok{(weekNo, n_posts)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Posts per week"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =}\NormalTok{ label}\OperatorTok{$}\NormalTok{weekNo,}
+                   \DataTypeTok{labels =}\NormalTok{ label}\OperatorTok{$}\NormalTok{month) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\KeywordTok{rel}\NormalTok{(}\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Total posts-1.pdf}
+
+\hypertarget{now-see-how-the-relative-number-of-users-reached-hasnt-changed-over-the-year}{%
+\paragraph{Now, see how the relative number of users reached hasn't
+changed over the
+year}\label{now-see-how-the-relative-number-of-users-reached-hasnt-changed-over-the-year}}
+
+\vspace{24pt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fb_week }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(weekNo, mean_reachedPerPost)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{) }\OperatorTok{+}\StringTok{  }\CommentTok{# second in a week}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Average users reached per post per week"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =}\NormalTok{ label}\OperatorTok{$}\NormalTok{weekNo,}
+                     \DataTypeTok{labels =}\NormalTok{ label}\OperatorTok{$}\NormalTok{month) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\KeywordTok{rel}\NormalTok{(}\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Average users reached per post per week-1.pdf}
+
+\hypertarget{last-check-out-how-the-click-rate-is-actually-falling}{%
+\paragraph{Last, check out how the click rate is actually
+falling!}\label{last-check-out-how-the-click-rate-is-actually-falling}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fb_week }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(weekNo, mean_propClicks)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Average clicks rate per week"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =}\NormalTok{ label}\OperatorTok{$}\NormalTok{weekNo,}
+                     \DataTypeTok{labels =}\NormalTok{ label}\OperatorTok{$}\NormalTok{month) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{(),}
+        \DataTypeTok{text =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size=}\KeywordTok{rel}\NormalTok{(}\DecValTok{4}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Average number of clicks per post per week-1.pdf}
+
+\hypertarget{take-a-look-at-post-type}{%
+\subsubsection{Take a look at post
+type}\label{take-a-look-at-post-type}}
+
+Posts with just a link increased throughout the year while posts with
+photos stayed about the same and posts with videos stopped early in the
+year. Only that but the click rate for photo posts deacreased as did
+single link posts. Recal that post with links garner a lower click rate
+than those paired with a photo or video.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Aggregate by week for a summarized dataset}
+\NormalTok{fb_week_type <-}\StringTok{ }\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(type, week, year) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{n_posts =} \KeywordTok{n}\NormalTok{(),}
+            \DataTypeTok{sum_reach =} \KeywordTok{sum}\NormalTok{(reach),}
+            \DataTypeTok{mean_propClicks =} \KeywordTok{mean}\NormalTok{(propClicks),}
+            \DataTypeTok{mean_propReaction =} \KeywordTok{mean}\NormalTok{(propReactions),}
+            \DataTypeTok{mean_reachedPerPost =}\NormalTok{ sum_reach }\OperatorTok{/}\StringTok{ }\NormalTok{n_posts) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(year, week)}
+
+
+\CommentTok{# Standardize the week number to begin with one}
+\NormalTok{fb_week_type <-}\StringTok{ }\KeywordTok{left_join}\NormalTok{(fb_week_type, fb_week[,}\KeywordTok{c}\NormalTok{(}\StringTok{"week"}\NormalTok{, }\StringTok{"weekNo"}\NormalTok{)])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(fb_week_type) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(weekNo, n_posts, }\DataTypeTok{col =}\NormalTok{ type)) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\KeywordTok{aes}\NormalTok{(weekNo, n_posts, }\DataTypeTok{col =}\NormalTok{ type)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Posts per week"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =}\NormalTok{ label}\OperatorTok{$}\NormalTok{weekNo,}
+                     \DataTypeTok{labels =}\NormalTok{ label}\OperatorTok{$}\NormalTok{month) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Posts per week by type-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(fb_week_type) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{(}\KeywordTok{aes}\NormalTok{(weekNo, mean_propClicks, }\DataTypeTok{col =}\NormalTok{ type)) }\OperatorTok{+}\StringTok{  }
+\StringTok{  }\KeywordTok{geom_smooth}\NormalTok{(}\DataTypeTok{method =} \StringTok{"lm"}\NormalTok{, }\KeywordTok{aes}\NormalTok{(weekNo, mean_propClicks, }\DataTypeTok{col =}\NormalTok{ type)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Average click rate by week"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =}\NormalTok{ label}\OperatorTok{$}\NormalTok{weekNo,}
+                     \DataTypeTok{labels =}\NormalTok{ label}\OperatorTok{$}\NormalTok{month) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.line =} \KeywordTok{element_line}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/Click rate by type-1.pdf}
+
+\hypertarget{post-topics-buzzwords}{%
+\subsection{Post Topics \& ``buzzwords''}\label{post-topics-buzzwords}}
+
+\hypertarget{top-5-titles}{%
+\subsubsection{Top 5 Titles}\label{top-5-titles}}
+
+Let's take a look at the top 5 most clicked posts for links and photos
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{clickable_Titles <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{filter}\NormalTok{(type }\OperatorTok{==}\StringTok{ "Link"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{select}\NormalTok{(type, title, propClicks) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(propClicks)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{top_n}\NormalTok{(}\DecValTok{5}\NormalTok{),}
+\NormalTok{                   fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{filter}\NormalTok{(type }\OperatorTok{==}\StringTok{ "Photo"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{select}\NormalTok{(type, title, propClicks) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(propClicks)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                     }\KeywordTok{top_n}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\NormalTok{)}
+ 
+\KeywordTok{names}\NormalTok{(clickable_Titles) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Type"}\NormalTok{, }\StringTok{"Post Title"}\NormalTok{, }\StringTok{"Click Rate"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}clc@{}}
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\centering
+Type\strut
+\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
+Post Title\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+Click Rate\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Link\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Freecodecamp shared your post.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.1966\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Link\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Before you drop \$2000 on a MacBook read this.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.1831\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Link\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Freecodecamp shared your post.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.1559\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Link\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Stay safe out there.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.1468\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Link\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+You can't make this stuff up.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.1447\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Photo\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Only 5 hours left! Get your low-effort Halloween costume:
+\url{https://teespring.com/low-effort-coder-halloween\#pid=2\&cid=2397\&sid=front}\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.506\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Photo\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Only one day left to get this low effort Halloween costume:
+freecodecamp.com/shop\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.4817\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Photo\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+Timeline Photos\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3661\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Photo\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+This subway map shows how agile software development methods relate to
+one another.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.2841\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering
+Photo\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+We either need to significantly improve security or keep some of these
+devices offline.\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.257\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{buzzwords}{%
+\subsubsection{Buzzwords}\label{buzzwords}}
+
+Now let's pull out common words from the post titles and look at post
+click rates for posts containing those common words.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Create a 'corpus' object via the  text mining, tm package}
+\NormalTok{post_titles <-}\StringTok{ }\KeywordTok{str_to_lower}\NormalTok{(fbdat}\OperatorTok{$}\NormalTok{title) }\CommentTok{#pulls the titles into a chr vector}
+\NormalTok{post_corpus <-}\StringTok{ }\NormalTok{post_titles }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{VectorSource}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{Corpus}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tm_map}\NormalTok{(removePunctuation) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tm_map}\NormalTok{(removeWords, }\KeywordTok{stopwords}\NormalTok{(}\StringTok{'english'}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tm_map}\NormalTok{(removeNumbers) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tm_map}\NormalTok{(stemDocument) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{tm_map}\NormalTok{(stripWhitespace) }
+  
+
+\CommentTok{# Make a word cloud}
+\NormalTok{wordcloud}\OperatorTok{::}\KeywordTok{wordcloud}\NormalTok{(post_corpus, }\DataTypeTok{max.words =} \DecValTok{80}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/buzzwords-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Isolate common words into a Text documet matrix}
+\NormalTok{commonWords_tdm <-}\StringTok{ }\NormalTok{post_corpus }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{TermDocumentMatrix}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{removeSparseTerms}\NormalTok{(}\FloatTok{0.99}\NormalTok{)}
+  
+\CommentTok{# Convert TDM to tibble}
+\NormalTok{commonWords <-}\StringTok{ }\NormalTok{commonWords_tdm }\OperatorTok{%>%}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{()}
+\NormalTok{commonWords <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{Terms =} \KeywordTok{rownames}\NormalTok{(commonWords),}
+                      \DataTypeTok{freq =} \KeywordTok{rowSums}\NormalTok{(commonWords)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(freq))}
+
+
+\CommentTok{# Get the average proportion of clicks for articals containing each buzzword}
+\NormalTok{wordClicks <-}\StringTok{ }\OtherTok{NULL}
+\ControlFlowTok{for}\NormalTok{(word }\ControlFlowTok{in} \KeywordTok{findFreqTerms}\NormalTok{(commonWords_tdm, }\DecValTok{12}\NormalTok{))\{ }\CommentTok{# only terms that occur 12+ times}
+\NormalTok{  modeldf <-}\StringTok{ }\NormalTok{fbdat }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\KeywordTok{filter}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(}\KeywordTok{str_to_lower}\NormalTok{(title), word))}
+\NormalTok{  wordclicksx <-}\StringTok{ }\KeywordTok{tibble}\NormalTok{(}\DataTypeTok{Buzzword =}\NormalTok{ word,}
+                        \DataTypeTok{avg.prop.clicks =} \KeywordTok{mean}\NormalTok{(modeldf}\OperatorTok{$}\NormalTok{propClicks),}
+                        \DataTypeTok{sd =} \KeywordTok{sd}\NormalTok{(modeldf}\OperatorTok{$}\NormalTok{propClicks),}
+                        \DataTypeTok{n =} \KeywordTok{nrow}\NormalTok{(modeldf))}
+\NormalTok{  wordClicks <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(wordClicks, wordclicksx)}
+\NormalTok{\}}
+
+
+\CommentTok{# Visualize clicks by buzzword}
+\KeywordTok{ggplot}\NormalTok{(wordClicks, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{reorder}\NormalTok{(Buzzword, avg.prop.clicks), }\DataTypeTok{y =}\NormalTok{avg.prop.clicks)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_flip}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Average click rate for articals containing term"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Term"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{fbClicksRMD_files/figure-latex/isolate word-1.pdf}
+
+\end{document}
